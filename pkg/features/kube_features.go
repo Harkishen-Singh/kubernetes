@@ -111,14 +111,6 @@ const (
 	// Allows running an ephemeral container in pod namespaces to troubleshoot a running pod.
 	EphemeralContainers featuregate.Feature = "EphemeralContainers"
 
-	// owner: @verb
-	// alpha: v1.10
-	// beta: v1.12
-	// GA: v1.17
-	//
-	// Allows all containers in a pod to share a process namespace.
-	PodShareProcessNamespace featuregate.Feature = "PodShareProcessNamespace"
-
 	// owner: @sjenning
 	// alpha: v1.11
 	//
@@ -541,6 +533,7 @@ const (
 
 	// owner: @robscott
 	// alpha: v1.18
+	// beta:  v1.19
 	//
 	// Enables AppProtocol field for Services and Endpoints.
 	ServiceAppProtocol featuregate.Feature = "ServiceAppProtocol"
@@ -597,7 +590,6 @@ var defaultKubernetesFeatureGates = map[featuregate.Feature]featuregate.FeatureS
 	LocalStorageCapacityIsolation:  {Default: true, PreRelease: featuregate.Beta},
 	Sysctls:                        {Default: true, PreRelease: featuregate.Beta},
 	EphemeralContainers:            {Default: false, PreRelease: featuregate.Alpha},
-	PodShareProcessNamespace:       {Default: true, PreRelease: featuregate.GA, LockToDefault: true}, // remove in 1.19
 	QOSReserved:                    {Default: false, PreRelease: featuregate.Alpha},
 	ExpandPersistentVolumes:        {Default: true, PreRelease: featuregate.Beta},
 	ExpandInUsePersistentVolumes:   {Default: true, PreRelease: featuregate.Beta},
@@ -661,7 +653,7 @@ var defaultKubernetesFeatureGates = map[featuregate.Feature]featuregate.FeatureS
 	AllowInsecureBackendProxy:                      {Default: true, PreRelease: featuregate.Beta},
 	PodDisruptionBudget:                            {Default: true, PreRelease: featuregate.Beta},
 	ServiceTopology:                                {Default: false, PreRelease: featuregate.Alpha},
-	ServiceAppProtocol:                             {Default: false, PreRelease: featuregate.Alpha},
+	ServiceAppProtocol:                             {Default: true, PreRelease: featuregate.Beta},
 	ImmutableEphemeralVolumes:                      {Default: false, PreRelease: featuregate.Alpha},
 	DefaultIngressClass:                            {Default: true, PreRelease: featuregate.Beta},
 	HugePageStorageMediumSize:                      {Default: false, PreRelease: featuregate.Alpha},

@@ -233,6 +233,27 @@ func (j *JSONPath) evalIdentifier(input []reflect.Value, node *IdentifierNode) (
 	return results, nil
 }
 
+func (j *JSONPath) evalMap(input []reflect.Value, hasAsterisk bool) ([]reflect.Value, error) {
+	result := []reflect.Value{}
+	if !hasAsterisk {
+		return nil, fmt.Errorf("invalid jsonpath for objects. Index should be an asterisk when applied over an object")
+	}
+
+	for _, value := range input {
+		value, isNil := template.Indirect(value)
+		if isNil {
+			continue
+		}
+		if value.Kind() == reflect.Map {
+			for _, e := range value.MapKeys() {
+				result = append(result, value.MapIndex(e))
+			}
+		}
+	}
+
+	return result, nil
+}
+
 // evalArray evaluates ArrayNode
 func (j *JSONPath) evalArray(input []reflect.Value, node *ArrayNode) ([]reflect.Value, error) {
 	result := []reflect.Value{}
@@ -243,6 +264,9 @@ func (j *JSONPath) evalArray(input []reflect.Value, node *ArrayNode) ([]reflect.
 			continue
 		}
 		if value.Kind() != reflect.Array && value.Kind() != reflect.Slice {
+			if value.Kind() == reflect.Map {
+				return j.evalMap(input, node.HasAsterisk)
+			}
 			return input, fmt.Errorf("%v is not array or slice", value.Type())
 		}
 		params := node.Params
